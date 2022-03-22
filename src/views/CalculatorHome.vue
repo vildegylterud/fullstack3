@@ -113,7 +113,7 @@
       </div>
     </div>
 
-    <box class="log">
+    <div class="log">
       <label id="calculatorStatusLabel">{{ calculatorStatus }}</label>
       <h1>Calculations</h1>
       <ul id="list">
@@ -121,7 +121,7 @@
           {{ calculation }}
         </li>
       </ul>
-    </box>
+    </div>
     <button id="prevAnswer" @click="getPreviousAnswers()">previous answers</button>
   </div>
 </template>

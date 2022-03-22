@@ -11,24 +11,28 @@
       <input type="phone" name="phone" v-model="phone" placeholder="Phone number" />
 
       <input class="button" type="submit" value="Login" />
+      <label id="registerstatusLabel">{{ registerStatus }}</label>
     </div>
   </form>
 </template>
 
 <script>
+
+import { doRegister } from '../utils/apiutil.js'
+
 export default {
   name: "Register",
 
   data() {
     return {
-      user: {
-        fullName: "",
-        address: "",
-        username: "",
-        password: "",
-        email: "",
-        phone: "",
-      },
+      fullName: "",
+      address: "",
+      username: "",
+      password: "",
+      email: "",
+      phone: "",
+      registerStatus: ""
+
     };
   },
 
@@ -41,11 +45,25 @@ export default {
         return false;
       }
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.inputIsEmpty()) {
         alert("Fyll inn alle felt, registrering feilet");
       } else {
-        this.$router.push("/loginSuccess");
+          const registerRequest= {
+            name: this.name,
+            address: this.address,
+            username: this.username,
+            password: this.password,
+            email: this.email,
+            phone: this.phone
+          };
+          const registerResponse = await doRegister(registerRequest);
+          if (registerResponse.registerStatus === "Success") {
+            await this.$router.push("/loginSuccess");
+          } else if (registerResponse.registerStatus === "Fail") {
+            alert("brukeren finnes fra før, prøv et annet brukernavn")
+            await this.$router.push("/register");
+          }
       }
     },
   },
